@@ -1,14 +1,12 @@
 import Plots from '@/components/Plots'
 import Image from 'next/image'
 import { TextField } from '@mui/material'
-import { ThemeProvider } from '@emotion/react'
 
 import Graph from '../assets/graph-authism.png'
 import Header from '../components/Header'
-import Head from 'next/head'
 
 
-export default function Home() {
+export default function Studies() {
 return (
     // Llamar al header
     <div className="min-h-screen">
