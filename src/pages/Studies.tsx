@@ -1,10 +1,12 @@
+"use client"
+
 import Plots from '@/components/Plots'
 import Image from 'next/image'
 import { TextField } from '@mui/material'
 
 import Graph from '../assets/graph-authism.png'
 import Header from '../components/Header'
-
+import UploadButton from '@/components/UploadButton'
 
 export default function Studies() {
 return (
@@ -31,6 +33,8 @@ return (
             
         </div>
         <div className="h-screen w-1/5 mt-7 ">
+            <UploadButton w={5} h={5}/>
+
             <TextField
             id="standard-multiline-static"
             multiline
@@ -38,6 +42,7 @@ return (
             placeholder="Comentarios del diagnostico"
             variant="filled"
             fullWidth 
+            className='mt-4'
             />
         </div>
         </div> 
