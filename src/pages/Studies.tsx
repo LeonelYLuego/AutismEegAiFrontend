@@ -8,7 +8,6 @@ import Header from '../components/Header'
 
 export default function Studies() {
 return (
-    // Llamar al header
     <div className="min-h-screen">
     <Header/>
     <div className="min-h-screen bg-white items-center justify-center align-middle flex-row overflow-hidden">
