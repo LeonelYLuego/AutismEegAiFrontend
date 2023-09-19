@@ -55,7 +55,7 @@ export default function UploadButton(w:any, h:any) {
                 startIcon={<CloudUploadIcon />}
                 style={uploadButtonStyle}
                 >
-                Crear paciente
+                Importar .csv
                 </Button>
             </label>
             <Button
