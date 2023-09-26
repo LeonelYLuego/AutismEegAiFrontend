@@ -9,21 +9,27 @@ import Header from "../components/Header";
 import patients from "@/utils/patientsData";
 
 export default function PatientsList() {
-  const [expanded, setExpanded] = React.useState<string | false>(false);
+  const [expanded, setExpanded] = React.useState<{ [key: string]: boolean }>({});
 
-  const handleChange =
-    (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
-      setExpanded(isExpanded ? panel : false);
-    };
 
+  const handleChange = (panel: string) => (
+    event: React.SyntheticEvent,
+    isExpanded: boolean
+  ) => {
+    setExpanded((prevExpanded) => ({
+      ...prevExpanded,
+      [panel]: isExpanded,
+    }));
+  };
   return (
     <div>
       <Header />
       <div>
         {patients.map((data, index) => (
           <Accordion
-            expanded={expanded === "panel1"}
+            expanded={expanded[index.toString()] || false}
             onChange={handleChange("panel1")}
+            key={index}
           >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
