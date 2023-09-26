@@ -2,7 +2,7 @@ import { Button } from "@mui/material";
 import Graph from "../assets/graph-authism.png";
 import People from "../assets/people.png"
 import Header from "../components/Header";
-import UploadButton from "@/components/UploadButton";
+import Link from "next/link";
 import Image from "next/image";
 import NewPatient from "../assets/plusone.png"
 
@@ -13,7 +13,7 @@ export default function Home() {
       <div className="flex">
         <div className="w-1/2 p-4 bg-gray-200 align-middle justify-center">
           <div className=" min-h-screen ">
-            <Button className="h-[90vh] w-full bg-yellow-300/70 flex align-middle justify-center">
+            <Link href="/PatientsList" className="h-[90vh] w-full bg-yellow-300/70 flex align-middle justify-center">
               <div className="h-[90vh] w-full bg-yellow-300/70 flex align-middle justify-center">
                 <div className="h-[38rem] w-full bg-gray-300/50 mt-7 ml-5 mr-5 flex flex-col align-middle justify-center">
                   <div className="text-slate-950 text-5xl text-center">Ver pacientes</div>
@@ -22,12 +22,12 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-            </Button>
+            </Link>
             
           </div>
         </div>
         <div className="w-1/2 p-4 bg-gray-200">
-          <Button className="h-[90vh] w-full bg-indigo-300/80	 flex align-middle justify-center">
+          <Link href="/StudiesList" className="h-[90vh] w-full bg-indigo-300/80	 flex align-middle justify-center">
             <div className="h-[90vh] w-full bg-indigo-300/80	 flex align-middle justify-center">
               <div className="h-[38rem] w-full bg-gray-300/50 mt-7 ml-5 mr-5 flex flex-col align-middle justify-center">
                   <div className="text-slate-950 text-5xl text-center">Crear Paciente</div>
@@ -36,7 +36,7 @@ export default function Home() {
                   </div>
               </div>
             </div>
-          </Button>
+          </Link>
         </div>
       </div>
     </div>
