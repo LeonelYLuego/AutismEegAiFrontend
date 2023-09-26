@@ -4,7 +4,7 @@ import StudiesList from "@/pages/StudiesList"
 export default function App() {
   return (
     <main>
-      {/* <Home/> */}
+      <Home/>
       <Studies/>
       <StudiesList/>
     </main>
