@@ -65,7 +65,7 @@ const Login: React.FC = () => {
           sx={{
             height: "100px",
             width: "100px",
-            marginBottom: "15 0px",
+            marginBottom: "150px",
             marginTop: "150px",
           }}
         />
