@@ -5,9 +5,14 @@ import Button from "@mui/material/Button";
 import { Avatar } from "@mui/material";
 import axios from "axios";
 
-const Login: React.FC = () => {
+const Signup: React.FC = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setName(event.target.value);
+  };
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -19,30 +24,24 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      const response = await axios.post(
-        "http://localhost:3001/api/auth/log-in",
-        {
-          email,
-          password,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
 
-      if (response.data.error) {
-        alert("Usuario o contraseña incorrecto.");
-      } else {
-        const data = response.data.data;
-        console.log(data);
-        localStorage.setItem("token", JSON.stringify(data.token));
-      }
+    try {
+      const response = await axios.post("http://localhost:3001/api/users", {
+        name,
+        email,
+        password,
+      });
+
+      // Assuming the token is available in the response or you can save it from the response
+      const token = response.data.token;
+      console.log("Token:", token);
+
+      // Clear form inputs after successful submission
+      setName("");
+      setEmail("");
+      setPassword("");
     } catch (error) {
-      console.error(error);
-      alert("Usuario o contraseña incorrecto.");
+      console.error("Error creating user:", error);
     }
   };
 
@@ -65,9 +64,15 @@ const Login: React.FC = () => {
           sx={{
             height: "100px",
             width: "100px",
-            marginBottom: "150px",
+            marginBottom: "70px",
             marginTop: "150px",
           }}
+        />
+        <TextField
+          label="Nombre"
+          variant="outlined"
+          onChange={handleNameChange}
+          sx={{ marginBottom: "20px", width: "100%" }}
         />
         <TextField
           label="Correo Electrónico"
@@ -95,4 +100,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default Signup;
