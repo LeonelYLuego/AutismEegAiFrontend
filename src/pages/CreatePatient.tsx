@@ -10,25 +10,25 @@ import Image from "next/image";
 
 
 const CreatePatient: React.FC = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [name, setName] = useState("");
+    const [age, setAge] = useState("");
 
-    const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(event.target.value);
+    const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setName(event.target.value);
     };
 
-    const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setPassword(event.target.value);
+    const handleEdadChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setAge(event.target.value);
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
         const response = await axios.post(
-            "http://localhost:3001/api/auth/log-in",
+            "http://localhost:3001/api/patients",
             {
-            email,
-            password,
+            name,
+            age,
             },
             {
             headers: {
@@ -38,15 +38,15 @@ const CreatePatient: React.FC = () => {
         );
 
         if (response.data.error) {
-            alert("Usuario o contraseña incorrecto.");
+            alert("Nombre o edad en formato incorrecto.");
         } else {
             const data = response.data.data;
             console.log(data);
-            localStorage.setItem("token", JSON.stringify(data.token));
+            console.log("Paciente añadido")
         }
         } catch (error) {
         console.error(error);
-        alert("Usuario o contraseña incorrecto.");
+        alert("Nombre o edad en formato incorrecto.");
         }
     };
 
@@ -79,14 +79,13 @@ const CreatePatient: React.FC = () => {
                     <TextField
                         label="Nombre Completo"
                         variant="outlined"
-                        onChange={handleEmailChange}
+                        onChange={handleNameChange}
                         sx={{ marginBottom: "20px", width: "100%" }}
                     />
                     <TextField
                         label="Edad"
                         variant="outlined"
-                        type="password"
-                        onChange={handlePasswordChange}
+                        onChange={handleEdadChange}
                         sx={{ marginBottom: "20vh", width: "100%" }}
                     />
                     <Button
