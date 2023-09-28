@@ -21,7 +21,7 @@ export const getData = async (): Promise<
       data: Study[];
     }>(`${API_URL}/api/studies/${PATIENT_ID}`, {
       headers: {
-        Authorization: `Bearer ${TOKEN_AUTH}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
     const studies = response.data.data as Study[];
