@@ -10,15 +10,21 @@ import Image from "next/image";
 
 const CreatePatient: React.FC = () => {
   const [name, setName] = useState("");
-  const [age, setAge] = useState("");
+  const [age, setAge] = useState(0);
+  const [validData, setValidData] = useState(false)
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
   };
 
   const handleEdadChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAge(event.target.value);
+    setAge(+event.target.value);
+    if(name.length > 0 && age < 100 && age > 0){
+        setValidData(true)
+    }
   };
+
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,7 +35,7 @@ const CreatePatient: React.FC = () => {
         "http://localhost:3001/api/patients",
         {
           name,
-          age: +age,
+          age: age,
         },
         {
           headers: {
@@ -60,6 +66,7 @@ const CreatePatient: React.FC = () => {
           backgroundColor: "#D9D9D9",
           width: "100%",
           justifyContent: "space-between",
+          borderRadius: "10px",
         }}
       >
         <Container
@@ -96,6 +103,7 @@ const CreatePatient: React.FC = () => {
             variant="contained"
             color="primary"
             onClick={handleSubmit}
+            disabled = {!validData}
           >
             Crear paciente
           </Button>
