@@ -14,10 +14,12 @@ const CreatePatient: React.FC = () => {
   const [validData, setValidData] = useState(false)
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValidData(false)
     setName(event.target.value);
   };
 
   const handleEdadChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValidData(false)
     setAge(+event.target.value);
     if(name.length > 0 && age < 100 && age > 0){
         setValidData(true)
