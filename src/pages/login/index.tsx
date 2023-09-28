@@ -40,8 +40,7 @@ const Login: React.FC = () => {
         alert("Usuario o contraseña incorrecto.");
       } else {
         const data = response.data.data;
-        console.log(data);
-        localStorage.setItem("token", JSON.stringify(data.token));
+        localStorage.setItem("token", data.token);
       }
     } catch (error) {
       console.error(error);
