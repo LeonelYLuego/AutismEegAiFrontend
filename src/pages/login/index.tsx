@@ -1,13 +1,16 @@
+"use client";
 import React, { useState } from "react";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { Avatar } from "@mui/material";
+import Image from "next/image";
 import axios from "axios";
+import logoImage from "/src/utils/logo.png";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const logoUrl = "src/utils/logo.png";
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -60,15 +63,21 @@ const Login: React.FC = () => {
           height: "600px",
         }}
       >
-        <Avatar
-          alt="Logo"
+        <Container
           sx={{
-            height: "100px",
-            width: "100px",
-            marginBottom: "150px",
+            alignItems: "center",
             marginTop: "150px",
+            borderBlockEndColor: "black",
           }}
-        />
+        >
+          <Image
+            src={logoImage}
+            alt="IAutism Logo"
+            width={200}
+            height={150}
+            layout="fixed"
+          />
+        </Container>
         <TextField
           label="Correo Electrónico"
           variant="outlined"
