@@ -67,7 +67,6 @@ const Login: React.FC = () => {
           sx={{
             alignItems: "center",
             marginTop: "150px",
-            borderBlockEndColor: "black",
           }}
         >
           <Image
