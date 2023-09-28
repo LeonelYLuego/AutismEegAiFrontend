@@ -19,6 +19,7 @@ export const getData = async (): Promise<
   try {
     const response = await axios.get<{
       data: Study[];
+      //cambiar aqui el patient_id por el id del paciente mandado desde la lista de pacientes
     }>(`${API_URL}/api/studies/${PATIENT_ID}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
