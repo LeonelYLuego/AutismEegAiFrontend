@@ -23,6 +23,7 @@ const CreatePatient: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        
         try {
         const response = await axios.post(
             "http://localhost:3001/api/patients",
@@ -33,6 +34,7 @@ const CreatePatient: React.FC = () => {
             {
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`
             },
             }
         );
