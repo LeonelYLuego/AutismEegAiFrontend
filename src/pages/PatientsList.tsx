@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -6,11 +6,40 @@ import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import Header from "../components/Header";
-import patients from "@/utils/patientsData";
+import axios from "axios";
+import { API_URL, TOKEN_AUTH } from "../../config";
+
+interface Patient {
+  id: string;
+  name: string;
+  age: number;
+}
 
 export default function PatientsList() {
-  const [expanded, setExpanded] = React.useState<{ [key: string]: boolean }>({});
+  const [expanded, setExpanded] = useState<{ [key: string]: boolean }>({});
+  const [patients, setPatients] = useState<Patient[]>([]);
 
+  useEffect(() => {
+    const axiosInstance = axios.create({
+      baseURL: API_URL,
+      headers: {
+        Authorization: TOKEN_AUTH,
+      },
+    });
+
+    axiosInstance
+      .get("/api/patients")
+      .then((response) => {
+        if (Array.isArray(response.data.data)) {
+          setPatients(response.data.data as Patient[]);
+        } else {
+          console.error("La respuesta de la API no es un array:", response.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error al obtener datos de pacientes:", error);
+      });
+  }, []);
 
   const handleChange = (panel: string) => (
     event: React.SyntheticEvent,
@@ -21,6 +50,7 @@ export default function PatientsList() {
       [panel]: isExpanded,
     }));
   };
+
   return (
     <div>
       <Header />
@@ -37,19 +67,13 @@ export default function PatientsList() {
               id="panel1bh-header"
             >
               <Typography sx={{ width: "20%", flexShrink: 0 }}>
-                {data.number}
-              </Typography>
-              <Typography sx={{ width: "20%", color: "text.secondary" }}>
                 {data.name}
               </Typography>
               <Typography sx={{ width: "20%", color: "text.secondary" }}>
-                {data.userID}
+                {data.id}
               </Typography>
               <Typography sx={{ width: "20%", color: "text.secondary" }}>
                 {data.age}
-              </Typography>
-              <Typography sx={{ width: "20%", color: "text.secondary" }}>
-                {data.qtyStudies}
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
