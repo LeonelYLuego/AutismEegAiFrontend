@@ -1,12 +1,13 @@
-import Studies from "@/pages/Studies"
-import Home from "@/pages/Home"
-import StudiesList from "@/pages/StudiesList"
+import Studies from "@/pages/Studies";
+import Home from "@/pages/Home";
+import StudiesList from "@/pages/StudiesList";
+import { PatientProvider } from "@/utils/patientsContext";
 export default function App() {
   return (
     <main>
-      <Home/>
-      <Studies/>
-      <StudiesList/>
+      <Home />
+      <Studies />
+      <StudiesList />
     </main>
-  )
+  );
 }
