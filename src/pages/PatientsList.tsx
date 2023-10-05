@@ -1,11 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, List, ListItem, ListItemText } from "@mui/material";
-import { useRouter } from "next/router";
-
 import Header from "../components/Header";
 import axios from "axios";
 import { API_URL, TOKEN_AUTH } from "../../config";
-import PatientContext, { PatientProvider } from "@/utils/patientsContext";
+import router from "next/router";
 
 interface Patient {
   id: string;
@@ -13,13 +11,8 @@ interface Patient {
   age: number;
 }
 
-export default function PatientsList() {
+const PatientsList = () => {
   const [patients, setPatients] = useState<Patient[]>([]);
-  const [selectedPatientId, setSelectedPatientId] = useState<string | null>(
-    null
-  );
-  const router = useRouter();
-  const { setPatientId } = useContext(PatientContext);
 
   useEffect(() => {
     const axiosInstance = axios.create({
@@ -47,33 +40,32 @@ export default function PatientsList() {
   }, []);
 
   const handlePatientClick = (patientId: string) => {
-    setPatientId(patientId);
     console.log(patientId);
-    router.push("/patientstudies");
+    router.push(`/patientstudies/${patientId}`);
   };
 
   return (
-    <PatientProvider>
+    <div>
+      <Header />
       <div>
-        <Header />
-        <div>
-          <List>
-            {patients.map((patient) => (
-              <ListItem key={patient.id}>
-                <ListItemText
-                  primary={`Nombre: ${patient.name}, ID: ${patient.id}, Edad: ${patient.age}`}
-                />
-                <Button
-                  variant="outlined"
-                  onClick={() => handlePatientClick(patient.id)}
-                >
-                  Ver estudios
-                </Button>
-              </ListItem>
-            ))}
-          </List>
-        </div>
+        <List>
+          {patients.map((patient) => (
+            <ListItem key={patient.id}>
+              <ListItemText primary={`${patient.name}`} />
+              <ListItemText primary={`${patient.id}`} />
+              <ListItemText primary={`${patient.age}`} />
+              <Button
+                variant="outlined"
+                onClick={() => handlePatientClick(patient.id)}
+              >
+                Ver estudios
+              </Button>
+            </ListItem>
+          ))}
+        </List>
       </div>
-    </PatientProvider>
+    </div>
   );
-}
+};
+
+export default PatientsList;
