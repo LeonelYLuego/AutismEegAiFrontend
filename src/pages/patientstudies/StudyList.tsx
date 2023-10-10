@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { API_URL, TOKEN_AUTH } from "../../../config";
+import { API_URL } from "../../../config";
 import {
   List,
   ListItem,
@@ -25,7 +25,11 @@ const StudyList: React.FC<{ patient_id: string }> = ({ patient_id }) => {
   const [studies, setStudies] = useState<Study[]>([]);
   const [studyToDelete, setStudyToDelete] = useState<string | null>(null);
 
+  const storedToken = localStorage.getItem("token");
+  const TOKEN_AUTH = storedToken ? JSON.parse(storedToken) : "";
+
   useEffect(() => {
+    console.log(TOKEN_AUTH);
     const axiosInstance = axios.create({
       baseURL: API_URL,
       headers: {
@@ -66,8 +70,6 @@ const StudyList: React.FC<{ patient_id: string }> = ({ patient_id }) => {
       axiosInstance
         .delete(`/api/studies/${patient_id}/${studyToDelete}`)
         .then((response) => {
-          // Handle successful deletion
-          // Update the state to remove the deleted study from the list
           setStudies((prevStudies) =>
             prevStudies.filter((study) => study.id !== studyToDelete)
           );
