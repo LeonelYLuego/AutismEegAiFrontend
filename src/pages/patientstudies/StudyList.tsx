@@ -11,6 +11,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Input,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
@@ -24,6 +25,7 @@ interface Study {
 const StudyList: React.FC<{ patient_id: string }> = ({ patient_id }) => {
   const [studies, setStudies] = useState<Study[]>([]);
   const [studyToDelete, setStudyToDelete] = useState<string | null>(null);
+  const [isAddStudyDialogOpen, setIsAddStudyDialogOpen] = useState(false);
 
   const storedToken = localStorage.getItem("token");
   const TOKEN_AUTH = storedToken ? JSON.parse(storedToken) : "";
@@ -82,6 +84,58 @@ const StudyList: React.FC<{ patient_id: string }> = ({ patient_id }) => {
     }
   };
 
+  const handleAddStudy = () => {
+    setIsAddStudyDialogOpen(true);
+  };
+
+  const handleCloseAddStudyDialog = () => {
+    setIsAddStudyDialogOpen(false);
+  };
+
+  const handleAddStudyDialogSubmit = async () => {
+    try {
+      const formData = new FormData();
+
+      const fileInputs = [
+        { key: "alfa", index: 0 },
+        { key: "beta", index: 1 },
+        { key: "gamma", index: 2 },
+        { key: "delta", index: 3 },
+        { key: "theta", index: 4 },
+      ];
+
+      // Iterate over each file input and append the file to the formData
+      for (const fileInput of fileInputs) {
+        const inputId = `file${fileInput.index + 1}`;
+        const inputFile = document.getElementById(inputId) as HTMLInputElement;
+
+        if (inputFile?.files && inputFile.files[0]) {
+          formData.append(fileInput.key, inputFile.files[0]);
+        } else {
+          formData.append(fileInput.key, "Sin archivos seleccionados");
+        }
+      }
+
+      const axiosInstance = axios.create({
+        baseURL: API_URL,
+        headers: {
+          Authorization: `Bearer ${TOKEN_AUTH}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      // Make a POST request to upload the files
+      const response = await axios.post(`/api/studies/${patient_id}`, formData);
+
+      console.log("Files uploaded successfully:", response.data);
+    } catch (error) {
+      console.error("Error uploading files:", error);
+    }
+
+    // Close the dialog
+    handleCloseAddStudyDialog();
+  };
+
   return (
     <div>
       <Typography variant="h5">Lista de Estudios {patient_id}: </Typography>
@@ -107,6 +161,11 @@ const StudyList: React.FC<{ patient_id: string }> = ({ patient_id }) => {
           </Typography>
         )}
       </List>
+
+      <Button variant="outlined" color="primary" onClick={handleAddStudy}>
+        Agregar Estudio
+      </Button>
+
       {/* Confirmación de eliminación */}
       <Dialog open={!!studyToDelete} onClose={() => setStudyToDelete(null)}>
         <DialogTitle>Confirmar eliminación</DialogTitle>
@@ -121,6 +180,40 @@ const StudyList: React.FC<{ patient_id: string }> = ({ patient_id }) => {
           </Button>
           <Button onClick={confirmDeleteStudy} color="primary">
             Eliminar
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Agregar estudio */}
+      <Dialog
+        open={isAddStudyDialogOpen}
+        onClose={handleCloseAddStudyDialog}
+        fullWidth
+        maxWidth="md"
+      >
+        <DialogTitle>Agregar Estudio</DialogTitle>
+        <DialogContent>
+          <Typography variant="subtitle1">
+            ID del Paciente: {patient_id}
+          </Typography>
+          <Typography variant="subtitle2">Subir archivos CSV:</Typography>
+          {/* Input fields to upload CSV files */}
+          {[1, 2, 3, 4, 5].map((index) => (
+            <Input
+              key={index}
+              type="file"
+              inputProps={{ multiple: false }}
+              fullWidth
+              sx={{ marginBottom: 2 }}
+            />
+          ))}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseAddStudyDialog} color="primary">
+            Cancelar
+          </Button>
+          <Button onClick={handleAddStudyDialogSubmit} color="primary">
+            Enviar
           </Button>
         </DialogActions>
       </Dialog>
