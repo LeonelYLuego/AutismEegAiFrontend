@@ -1,66 +1,71 @@
-import * as React from "react";
-import Accordion from "@mui/material/Accordion";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-
+import React, { useEffect, useState } from "react";
+import { Button, List, ListItem, ListItemText } from "@mui/material";
 import Header from "../components/Header";
-import patients from "@/utils/patientsData";
+import axios from "axios";
+import { API_URL, TOKEN_AUTH } from "../../config";
+import router from "next/router";
 
-export default function PatientsList() {
-  const [expanded, setExpanded] = React.useState<{ [key: string]: boolean }>({});
+interface Patient {
+  id: string;
+  name: string;
+  age: number;
+}
 
+const PatientsList = () => {
+  const [patients, setPatients] = useState<Patient[]>([]);
 
-  const handleChange = (panel: string) => (
-    event: React.SyntheticEvent,
-    isExpanded: boolean
-  ) => {
-    setExpanded((prevExpanded) => ({
-      ...prevExpanded,
-      [panel]: isExpanded,
-    }));
+  useEffect(() => {
+    const axiosInstance = axios.create({
+      baseURL: API_URL,
+      headers: {
+        Authorization: TOKEN_AUTH,
+      },
+    });
+
+    axiosInstance
+      .get("/api/patients")
+      .then((response) => {
+        if (Array.isArray(response.data.data)) {
+          setPatients(response.data.data as Patient[]);
+        } else {
+          console.error(
+            "La respuesta de la API no es un array:",
+            response.data
+          );
+        }
+      })
+      .catch((error) => {
+        console.error("Error al obtener datos de pacientes:", error);
+      });
+  }, []);
+
+  const handlePatientClick = (patientId: string) => {
+    console.log(patientId);
+    router.push(`/patientstudies/${patientId}`);
   };
+
   return (
     <div>
       <Header />
       <div>
-        {patients.map((data, index) => (
-          <Accordion
-            expanded={expanded[index.toString()] || false}
-            onChange={handleChange("panel1")}
-            key={index}
-          >
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1bh-content"
-              id="panel1bh-header"
-            >
-              <Typography sx={{ width: "20%", flexShrink: 0 }}>
-                {data.number}
-              </Typography>
-              <Typography sx={{ width: "20%", color: "text.secondary" }}>
-                {data.name}
-              </Typography>
-              <Typography sx={{ width: "20%", color: "text.secondary" }}>
-                {data.userID}
-              </Typography>
-              <Typography sx={{ width: "20%", color: "text.secondary" }}>
-                {data.age}
-              </Typography>
-              <Typography sx={{ width: "20%", color: "text.secondary" }}>
-                {data.qtyStudies}
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography>
-                Nulla facilisi. Phasellus sollicitudin nulla et quam mattis
-                feugiat. Aliquam eget maximus est, id dignissim quam.
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
-        ))}
+        <List>
+          {patients.map((patient) => (
+            <ListItem key={patient.id}>
+              <ListItemText primary={`${patient.name}`} />
+              <ListItemText primary={`${patient.id}`} />
+              <ListItemText primary={`${patient.age}`} />
+              <Button
+                variant="outlined"
+                onClick={() => handlePatientClick(patient.id)}
+              >
+                Ver estudios
+              </Button>
+            </ListItem>
+          ))}
+        </List>
       </div>
     </div>
   );
-}
+};
+
+export default PatientsList;

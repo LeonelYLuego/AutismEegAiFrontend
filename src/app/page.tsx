@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Login from "@/pages/login/index";
 import SignUp from "@/pages/signup/index";
+import { PatientProvider } from "@/utils/patientsContext";
 
 export default function App() {
   const [userExists, setUserExists] = useState(false);
@@ -29,5 +30,9 @@ export default function App() {
     return <div>Loading...</div>;
   }
 
-  return <main>{userExists ? <Login /> : <SignUp />}</main>;
+  return (
+    <PatientProvider>
+      <main>{userExists ? <Login /> : <SignUp />}</main>
+    </PatientProvider>
+  );
 }

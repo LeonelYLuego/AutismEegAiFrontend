@@ -3,12 +3,17 @@ import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import { Avatar } from "@mui/material";
 import ALogo from "../assets/iautism-logo.png";
 import axios from "axios";
 import Image from "next/image";
 
 const CreatePatient: React.FC = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+  };
   const [name, setName] = useState("");
   const [age, setAge] = useState(0);
   const [validData, setValidData] = useState(false)

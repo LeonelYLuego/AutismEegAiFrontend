@@ -1,62 +1,72 @@
-"use client";
-
-import * as React from "react";
-import Accordion from "@mui/material/Accordion";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-
+import React, { useEffect, useState } from "react";
+import { Button, List, ListItem, ListItemText } from "@mui/material";
 import Header from "../components/Header";
-import studies from "@/utils/studiesList";
+import axios from "axios";
+import { API_URL, TOKEN_AUTH } from "../../config";
+import { useRouter } from "next/router"; // Importa useRouter desde next/router
 
-export default function StudiesList() {
-  const [expanded, setExpanded] = React.useState<{ [key: string]: boolean }>(
-    {}
-  );
+interface Patient {
+  id: string;
+  name: string;
+  age: number;
+}
 
-  const handleChange =
-    (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
-      setExpanded((prevExpanded) => ({
-        ...prevExpanded,
-        [panel]: isExpanded,
-      }));
-    };
+const PatientsList = () => {
+  const [patients, setPatients] = useState<Patient[]>([]);
+  const router = useRouter(); // Obtén el objeto de enrutamiento
+
+  useEffect(() => {
+    const axiosInstance = axios.create({
+      baseURL: API_URL,
+      headers: {
+        Authorization: TOKEN_AUTH,
+      },
+    });
+
+    axiosInstance
+      .get("/api/patients")
+      .then((response) => {
+        if (Array.isArray(response.data.data)) {
+          setPatients(response.data.data as Patient[]);
+        } else {
+          console.error(
+            "La respuesta de la API no es un array:",
+            response.data
+          );
+        }
+      })
+      .catch((error) => {
+        console.error("Error al obtener datos de pacientes:", error);
+      });
+  }, []);
+
+  const handlePatientClick = (patientId: string) => {
+    console.log(patientId);
+    router.push(`/patientsudies/${patientId}`); // Navega a la ruta dinámica al hacer clic
+  };
 
   return (
     <div>
       <Header />
       <div>
-        {studies.map((data, index) => (
-          <Accordion
-            expanded={expanded[index] || false}
-            onChange={handleChange(index.toString())}
-            key={index}
-          >
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1bh-content"
-              id="panel1bh-header"
-            >
-              <Typography sx={{ width: "25%", flexShrink: 0 }}>
-                {data.id}
-              </Typography>
-              <Typography sx={{ width: "25%", color: "text.secondary" }}>
-                {data.created_at}
-              </Typography>
-              <Typography sx={{ width: "25%", color: "text.secondary" }}>
-                {data.result}
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography>
-                Nulla facilisi. Phasellus sollicitudin nulla et quam mattis
-                feugiat. Aliquam eget maximus est, id dignissim quam.
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
-        ))}
+        <List>
+          {patients.map((patient) => (
+            <ListItem key={patient.id}>
+              <ListItemText
+                primary={`Nombre: ${patient.name}, ID: ${patient.id}, Edad: ${patient.age}`}
+              />
+              <Button
+                variant="outlined"
+                onClick={() => handlePatientClick(patient.id)}
+              >
+                Ver estudios
+              </Button>
+            </ListItem>
+          ))}
+        </List>
       </div>
     </div>
   );
-}
+};
+
+export default PatientsList;
