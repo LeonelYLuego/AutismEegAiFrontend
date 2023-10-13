@@ -16,6 +16,12 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
 
+const getLocalStorage = () => {
+  if (typeof window !== "undefined") {
+    return window.localStorage;
+  }
+  return null;
+};
 interface Study {
   id: string;
   created_on: string;
@@ -27,11 +33,11 @@ const StudyList: React.FC<{ patient_id: string }> = ({ patient_id }) => {
   const [studyToDelete, setStudyToDelete] = useState<string | null>(null);
   const [isAddStudyDialogOpen, setIsAddStudyDialogOpen] = useState(false);
 
-  const storedToken = localStorage.getItem("token");
+  const localStorage = getLocalStorage();
+  const storedToken = localStorage ? localStorage.getItem("token") : null;
   const TOKEN_AUTH = storedToken ? JSON.parse(storedToken) : "";
 
   useEffect(() => {
-    console.log(TOKEN_AUTH);
     const axiosInstance = axios.create({
       baseURL: API_URL,
       headers: {
@@ -116,24 +122,26 @@ const StudyList: React.FC<{ patient_id: string }> = ({ patient_id }) => {
         }
       }
 
-      const axiosInstance = axios.create({
-        baseURL: API_URL,
-        headers: {
-          Authorization: `Bearer ${TOKEN_AUTH}`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      // Make a POST request to upload the files
-      const response = await axios.post(`/api/studies/${patient_id}`, formData);
+      const response = await axios.post(
+        `http://localhost:3001/api/studies/${patient_id}`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${TOKEN_AUTH}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       console.log("Files uploaded successfully:", response.data);
+      // Close the dialog
+      handleCloseAddStudyDialog();
+
+      // Reload the page to show the new study
+      window.location.reload();
     } catch (error) {
       console.error("Error uploading files:", error);
     }
-
-    // Close the dialog
-    handleCloseAddStudyDialog();
   };
 
   return (

@@ -65,23 +65,26 @@ const Login: React.FC = () => {
       >
         <Container
           sx={{
+            display: "flex",
+            justifyContent: "center",
             alignItems: "center",
-            marginTop: "150px",
+            marginTop: "130px",
           }}
         >
           <Image
             src={logoImage}
             alt="IAutism Logo"
-            width={200}
-            height={150}
+            width={250}
+            height={110}
             layout="fixed"
           />
         </Container>
+
         <TextField
           label="Correo Electrónico"
           variant="outlined"
           onChange={handleEmailChange}
-          sx={{ marginBottom: "20px", width: "100%" }}
+          sx={{ marginBottom: "20px", marginTop: "150px", width: "100%" }}
         />
         <TextField
           label="Contraseña"

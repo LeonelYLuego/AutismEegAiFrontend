@@ -4,7 +4,9 @@ import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { Avatar } from "@mui/material";
+import Image from "next/image";
 import axios from "axios";
+import logoImage from "/src/utils/logo.png";
 
 const Signup: React.FC = () => {
   const [name, setName] = useState("");
@@ -55,26 +57,34 @@ const Signup: React.FC = () => {
           flexDirection: "column",
           alignItems: "center",
           marginTop: "150px",
-          backgroundColor: "#E1E1E1",
+          backgroundColor: "#D9D9D9",
           borderRadius: "10px",
           height: "600px",
         }}
       >
-        <Avatar
-          alt="Logo"
+        <Container
           sx={{
-            height: "100px",
-            width: "100px",
-            marginBottom: "70px",
-            marginTop: "150px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: "130px",
           }}
-        />
+        >
+          <Image
+            src={logoImage}
+            alt="IAutism Logo"
+            width={250}
+            height={110}
+            layout="fixed"
+          />
+        </Container>
         <TextField
           label="Nombre"
           variant="outlined"
           onChange={handleNameChange}
-          sx={{ marginBottom: "20px", width: "100%" }}
+          sx={{ marginBottom: "20px", marginTop: "60px", width: "100%" }}
         />
+
         <TextField
           label="Correo Electrónico"
           variant="outlined"
