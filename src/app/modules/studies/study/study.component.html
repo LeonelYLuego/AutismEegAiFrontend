@@ -1,0 +1,32 @@
+<div *ngIf="!study || !patient" class="flex flex-col items-center">
+  <mat-spinner></mat-spinner>
+</div>
+<div *ngIf="study && patient">
+  <div class="flex flex-row my-3 px-2">
+    <h1 class="!text-3xl !font-normal">{{ patient.name }}</h1>
+    <div class="flex-auto"></div>
+    <h1 class="!text-3xl !font-normal">
+      {{ study.createdOn | date : "dd/MM/yyyy" }}
+    </h1>
+  </div>
+  <div class="bg-white p-3 rounded-md shadow-md mb-4">
+    <h2>Resultados</h2>
+    <ngx-chartjs
+      type="radar"
+      [data]="resultsChart.data"
+      [options]="resultsChart.options"
+      class="mb-20"
+    ></ngx-chartjs>
+  </div>
+  <div class="bg-white p-3 rounded-md shadow-md mb-4">
+    <h2>Gráficas</h2>
+    <div *ngFor="let chart of charts">
+      <ngx-chartjs
+        type="line"
+        [data]="chart.data"
+        [options]="chart.options"
+        class="mb-20"
+      ></ngx-chartjs>
+    </div>
+  </div>
+</div>

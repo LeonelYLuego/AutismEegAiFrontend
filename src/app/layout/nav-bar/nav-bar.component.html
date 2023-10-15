@@ -1,0 +1,14 @@
+<mat-toolbar class="toolbar sticky top-0 z-50">
+  <span class="cursor-pointer inline-flex ms-2" [routerLink]="['/']">
+    <img src="/assets/images/logo.png" width="150px" />
+  </span>
+  <div class="flex-auto"></div>
+  <button mat-button [matMenuTriggerFor]="userMenu">
+    {{ user ? user.name : "" }}
+  </button>
+  <mat-menu #userMenu="matMenu">
+    <button mat-menu-item (click)="logOut()">
+      <mat-icon>logout</mat-icon> Cerrar Sesión
+    </button>
+  </mat-menu>
+</mat-toolbar>

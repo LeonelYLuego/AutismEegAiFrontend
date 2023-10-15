@@ -1,0 +1,59 @@
+<h1 mat-dialog-title>Agregar estudio</h1>
+<form [formGroup]="wavesForm" (submit)="create()">
+  <div mat-dialog-content>
+    <p>Delta</p>
+    <input
+      type="file"
+      class="mb-4"
+      accept=".csv"
+      (change)="onFileChange($event, 'delta')"
+      formControlName="delta"
+    />
+    <p>Theta</p>
+    <input
+      type="file"
+      class="mb-4"
+      accept=".csv"
+      (change)="onFileChange($event, 'theta')"
+      formControlName="theta"
+    />
+    <p>Alfa</p>
+    <input
+      type="file"
+      class="mb-4"
+      accept=".csv"
+      (change)="onFileChange($event, 'alfa')"
+      formControlName="alfa"
+    />
+    <p>Beta</p>
+    <input
+      type="file"
+      class="mb-4"
+      accept=".csv"
+      (change)="onFileChange($event, 'beta')"
+      formControlName="beta"
+    />
+    <p>Gamma</p>
+    <input
+      type="file"
+      class="mb-4"
+      accept=".csv"
+      (change)="onFileChange($event, 'gamma')"
+      formControlName="gamma"
+    />
+  </div>
+  <div mat-dialog-actions align="end">
+    <button
+      type="submit"
+      mat-raised-button
+      color="primary"
+      [disabled]="wavesForm.invalid && !loading"
+    >
+      <span *ngIf="!loading">Agregar</span>
+      <span *ngIf="loading"
+        ><mat-spinner [diameter]="30" color="accent"></mat-spinner
+      ></span>
+    </button>
+    <button type="button" mat-raised-button mat-dialog-close>Cancelar</button>
+  </div>
+</form>

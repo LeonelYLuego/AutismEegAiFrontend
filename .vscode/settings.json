@@ -5,7 +5,19 @@
         "**/.hg": true,
         "**/CVS": true,
         "**/.DS_Store": true,
-        "**/Thumbs.db": true
+        "**/Thumbs.db": true,
+        ".vscode": true,
+        "node_modules": true,
+        ".editorconfig": true,
+        "package-lock.json": true,
+        "tsconfig.app.json": true,
+        "tsconfig.spec.json": true
     },
-    "hide-files.files": []
+    "hide-files.files": [],
+    "cSpell.words": [
+        "Behaviours",
+        "chartjs",
+        "perseverative",
+        "spanish"
+    ]
 }

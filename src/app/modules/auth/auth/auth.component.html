@@ -1,0 +1,65 @@
+<div
+  id="auth"
+  class="flex flex-col items-center justify-center w-full h-full px-4"
+>
+  <mat-card class="max-w-xl w-full shadow-lg">
+    <mat-card-title>
+      <div class="flex flex-col justify-center items-center w-100">
+        <img src="/assets/images/logo.png" />
+      </div>
+    </mat-card-title>
+    <form *ngIf="registered" [formGroup]="logInForm" (submit)="logIn()">
+      <mat-card-content>
+        <mat-form-field class="w-full">
+          <mat-label>Correo electrónico</mat-label>
+          <input matInput formControlName="email" />
+          <mat-error>Correo electrónico inválido</mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-full">
+          <mat-label>Contraseña</mat-label>
+          <input matInput type="password" formControlName="password" />
+          <mat-error>Contraseña inválida</mat-error>
+        </mat-form-field>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button
+          mat-raised-button
+          type="submit"
+          color="primary"
+          [disabled]="logInForm.invalid"
+        >
+          Iniciar Sesión
+        </button>
+      </mat-card-actions>
+    </form>
+    <form *ngIf="!registered" [formGroup]="registerForm" (submit)="register()">
+      <mat-card-content>
+        <mat-form-field class="w-full">
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="name" />
+          <mat-error>Nombre inválido</mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-full">
+          <mat-label>Correo electrónico</mat-label>
+          <input matInput formControlName="email" />
+          <mat-error>Correo electrónico inválido</mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-full">
+          <mat-label>Contraseña</mat-label>
+          <input matInput type="password" formControlName="password" />
+          <mat-error>Contraseña inválida</mat-error>
+        </mat-form-field>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button
+          mat-raised-button
+          type="submit"
+          color="primary"
+          [disabled]="registerForm.invalid"
+        >
+          Registrarse
+        </button>
+      </mat-card-actions>
+    </form>
+  </mat-card>
+</div>

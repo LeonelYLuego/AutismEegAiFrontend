@@ -1,0 +1,12 @@
+<h2 mat-dialog-title>¿Está seguro de eliminarlo?</h2>
+<mat-dialog-content *ngIf="cascade">
+  <p>Todos los elementos relacionados también serán eliminados</p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-flat-button color="warn" [mat-dialog-close]="true">
+    Eliminar
+  </button>
+  <button mat-button cdkFocusInitial [mat-dialog-close]="false">
+    Cancelar
+  </button>
+</mat-dialog-actions>

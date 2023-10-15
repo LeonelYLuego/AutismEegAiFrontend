@@ -1,0 +1,92 @@
+<div *ngIf="patient">
+  <div class="flex flex-row my-3 px-2">
+    <h1 class="!text-3xl !font-normal">Estudios de {{ patient.name }}</h1>
+    <div class="flex-auto"></div>
+    <button mat-raised-button color="primary" (click)="openCreateDialog()">
+      Agregar
+    </button>
+  </div>
+  <div class="bg-white p-3 rounded-md shadow-md mb-4">
+    <div class="overflow-auto">
+      <table mat-table [dataSource]="studies">
+        <ng-container matColumnDef="createdOn">
+          <th mat-header-cell *matHeaderCellDef>Fecha</th>
+          <td mat-cell *matCellDef="let study" class="!text-base">
+            <a
+              [routerLink]="['/', 'studies', patient.id, study.id]"
+              class="hover:underline cursor-pointer text-blue-400"
+              >{{ study.createdOn | date : "dd/MM/yyyy" }}</a
+            >
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="executiveFunction">
+          <th mat-header-cell *matHeaderCellDef>Función ejecutiva</th>
+          <td mat-cell *matCellDef="let study" class="!text-base">
+            {{ study.executiveFunction }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="sensoryProcessing">
+          <th mat-header-cell *matHeaderCellDef>Procesamiento sensorial</th>
+          <td mat-cell *matCellDef="let study" class="!text-base">
+            {{ study.sensoryProcessing }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="repetitiveBehaviours">
+          <th mat-header-cell *matHeaderCellDef>Comportamientos repetitivos</th>
+          <td mat-cell *matCellDef="let study" class="!text-base">
+            {{ study.repetitiveBehaviours }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="motorSkills">
+          <th mat-header-cell *matHeaderCellDef>Habilidades motoras</th>
+          <td mat-cell *matCellDef="let study" class="!text-base">
+            {{ study.motorSkills }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="perseverativeThinking">
+          <th mat-header-cell *matHeaderCellDef>Pensamiento perseverante</th>
+          <td mat-cell *matCellDef="let study" class="!text-base">
+            {{ study.perseverativeThinking }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="socialAwareness">
+          <th mat-header-cell *matHeaderCellDef>Conciencia social</th>
+          <td mat-cell *matCellDef="let study" class="!text-base">
+            {{ study.socialAwareness }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="verbalNoVerbalCommunication">
+          <th mat-header-cell *matHeaderCellDef>
+            Comunicación verbal y no verbal
+          </th>
+          <td mat-cell *matCellDef="let study" class="!text-base">
+            {{ study.verbalNoVerbalCommunication }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="informationProcessing">
+          <th mat-header-cell *matHeaderCellDef>
+            Procesamiento de información
+          </th>
+          <td mat-cell *matCellDef="let study" class="!text-base">
+            {{ study.informationProcessing }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="remove">
+          <th mat-header-cell *matHeaderCellDef>Eliminar</th>
+          <td mat-cell *matCellDef="let study" class="!text-base">
+            <button
+              mat-raised-button
+              color="warn"
+              (click)="openDeleteDialog(study.id)"
+            >
+              Eliminar
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+  </div>
+</div>

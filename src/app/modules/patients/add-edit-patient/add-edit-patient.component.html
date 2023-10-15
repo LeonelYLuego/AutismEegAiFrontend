@@ -1,0 +1,26 @@
+<h1 mat-dialog-title>{{ data.id ? "Editar" : "Agregar" }} paciente</h1>
+<form [formGroup]="patientForm" (submit)="data.id ? update() : create()">
+  <div mat-dialog-content>
+    <mat-form-field class="w-full">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="name" />
+      <mat-error>Nombre inválido</mat-error>
+    </mat-form-field>
+    <mat-form-field class="w-full">
+      <mat-label>Edad</mat-label>
+      <input matInput formControlName="age" />
+      <mat-error>Edad inválida</mat-error>
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions align="end">
+    <button
+      type="submit"
+      mat-raised-button
+      color="primary"
+      [disabled]="patientForm.invalid"
+    >
+      {{ data.id ? "Editar" : "Agregar" }}
+    </button>
+    <button type="button" mat-raised-button mat-dialog-close>Cancelar</button>
+  </div>
+</form>
