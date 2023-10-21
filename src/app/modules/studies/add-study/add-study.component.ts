@@ -9,17 +9,11 @@ import { StudiesService } from '@studies/studies.service';
   styleUrls: ['./add-study.component.scss'],
 })
 export class AddStudyComponent {
-  files: {
-    [key: string]: File | undefined;
-  } = {};
+  study: File | undefined;
   loading = false;
 
   wavesForm = new FormGroup({
-    delta: new FormControl(null, [Validators.required]),
-    theta: new FormControl(null, [Validators.required]),
-    alfa: new FormControl(null, [Validators.required]),
-    beta: new FormControl(null, [Validators.required]),
-    gamma: new FormControl(null, [Validators.required]),
+    study: new FormControl(null, [Validators.required]),
   });
 
   constructor(
@@ -28,21 +22,16 @@ export class AddStudyComponent {
     private studiesService: StudiesService
   ) {}
 
-  onFileChange(event: Event, controlName: string) {
+  onFileChange(event: Event) {
     const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.files[controlName] = input.files[0];
-    } else {
-      this.files[controlName] = undefined;
-    }
+    if (input.files && input.files.length > 0) this.study = input.files[0];
+    else this.study = undefined;
   }
 
   async create(): Promise<void> {
     if (this.wavesForm.valid) {
       const formData = new FormData();
-      Object.keys(this.files).map((wave) => {
-        formData.append(wave, this.files[wave]!);
-      });
+      formData.append('study', this.study!);
       this.loading = true;
       await this.studiesService.create(this.data.patientId, formData);
       this.dialogRef.close();

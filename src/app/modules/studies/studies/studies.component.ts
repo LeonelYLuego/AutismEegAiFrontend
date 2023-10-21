@@ -18,14 +18,7 @@ export class StudiesComponent implements OnInit {
   studies: Study[] = [];
   displayedColumns = [
     'createdOn',
-    'executiveFunction',
-    'sensoryProcessing',
-    'repetitiveBehaviours',
-    'motorSkills',
-    'perseverativeThinking',
-    'socialAwareness',
-    'verbalNoVerbalCommunication',
-    'informationProcessing',
+    'result',
     'remove',
   ];
 

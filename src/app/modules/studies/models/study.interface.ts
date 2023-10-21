@@ -1,7 +1,6 @@
 export interface Wave {
   id: string;
   time: number;
-  type: string;
   channel1: number;
   channel2: number;
   channel3: number;
@@ -22,12 +21,5 @@ export interface Study {
   id: string;
   createdOn: Date;
   waves: Wave[];
-  executiveFunction: number | null;
-  sensoryProcessing: number | null;
-  repetitiveBehaviours: number | null;
-  motorSkills: number | null;
-  perseverativeThinking: number | null;
-  socialAwareness: number | null;
-  verbalNoVerbalCommunication: number | null;
-  informationProcessing: number | null;
+  result: number | null;
 }

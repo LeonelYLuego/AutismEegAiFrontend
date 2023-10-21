@@ -10,23 +10,37 @@
     </h1>
   </div>
   <div class="bg-white p-3 rounded-md shadow-md mb-4">
-    <h2>Resultados</h2>
-    <ngx-chartjs
-      type="radar"
-      [data]="resultsChart.data"
-      [options]="resultsChart.options"
-      class="mb-20"
-    ></ngx-chartjs>
+    <h2>Resultado: {{ study.result }}</h2>
+    <p>Puntuaciones sugeridas</p>
+    <table>
+      <tr>
+        <th>0 - 10</th>
+        <td>Bajo</td>
+      </tr>
+      <tr>
+        <th>11 - 22</th>
+        <td>Media (la media femenina es de 15 y la masculina de 17)</td>
+      </tr>
+      <tr>
+        <th>23 - 31</th>
+        <td>Sobre la media</td>
+      </tr>
+      <tr>
+        <th>32 - 50</th>
+        <td>
+          Muy alto (la media de las personas con síndrome de Asperger o autismo
+          de alto funcionamiento es de 35)
+        </td>
+      </tr>
+    </table>
   </div>
   <div class="bg-white p-3 rounded-md shadow-md mb-4">
-    <h2>Gráficas</h2>
-    <div *ngFor="let chart of charts">
-      <ngx-chartjs
-        type="line"
-        [data]="chart.data"
-        [options]="chart.options"
-        class="mb-20"
-      ></ngx-chartjs>
-    </div>
+    <h2>Gráfica</h2>
+    <ngx-chartjs
+      type="line"
+      [data]="studyChart.data"
+      [options]="studyChart.options"
+      class="mb-20"
+    ></ngx-chartjs>
   </div>
 </div>

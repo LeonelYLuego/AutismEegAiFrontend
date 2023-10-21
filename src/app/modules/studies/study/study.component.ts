@@ -19,6 +19,7 @@ import {
   RadarController,
   RadialLinearScale,
 } from 'chart.js';
+import zoomPlugin from 'chartjs-plugin-zoom';
 
 type channelName =
   | 'channel1'
@@ -44,8 +45,30 @@ type channelName =
 export class StudyComponent implements OnInit {
   patient: Patient | undefined;
   study: Study | undefined;
-  charts: { data: ChartData; options: ChartOptions }[] = [];
-  waveTypes = ['delta', 'theta', 'alfa', 'beta', 'gamma'];
+  studyChart: { data: ChartData; options: ChartOptions } = {
+    data: {
+      datasets: [],
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'top',
+        },
+        title: {
+          display: true,
+          text: `Ondas`,
+        },
+        zoom: {
+          zoom: {
+            wheel: {
+              enabled: true
+            }
+          }
+        }
+      },
+    },
+  };
   channels: { name: channelName; color: string }[] = [
     {
       name: 'channel1',
@@ -104,47 +127,6 @@ export class StudyComponent implements OnInit {
       color: '#808080',
     },
   ];
-  resultsChart: { data: ChartData; options: ChartOptions } = {
-    options: {
-      responsive: true,
-      plugins: {
-        legend: {
-          position: 'top',
-        },
-        title: {
-          display: true,
-          text: `Resultados`,
-        },
-      },
-      scales: {
-        r: {
-          min: 0,
-          max: 100,
-        },
-      },
-    },
-    data: {
-      labels: [
-        'Función ejecutiva',
-        'Procesamiento sensorial',
-        'Comportamientos repetitivos',
-        'Habilidades motoras',
-        'Pensamiento perseverante',
-        'Conciencia social',
-        'Comunicación verbal y no verbal',
-        'Procesamiento de información',
-      ],
-      datasets: [
-        {
-          label: 'Resultado',
-          data: [],
-          borderColor: '#4758b8',
-          backgroundColor: '#4758b8',
-          fill: true,
-        },
-      ],
-    },
-  };
 
   constructor(
     private patientsService: PatientsService,
@@ -162,57 +144,37 @@ export class StudyComponent implements OnInit {
       Tooltip,
       Legend,
       RadarController,
-      RadialLinearScale
+      RadialLinearScale,
+      zoomPlugin
     );
   }
 
   createCharts(waves: Wave[]): void {
-    this.waveTypes.map((waveType) => {
-      const options: ChartOptions = {
-        responsive: true,
-        plugins: {
-          legend: {
-            position: 'top',
-          },
-          title: {
-            display: true,
-            text: `Ondas ${waveType}`,
-          },
-        },
-      };
-      const foundWaves = waves.filter((wave) => wave.type == waveType);
+    const labels: string[] = [];
+    for (let i = 1; i <= waves.length; i++) labels.push(i.toString());
+    this.studyChart.data.labels = labels;
 
-      const labels: string[] = [];
-      for (let i = 1; i <= foundWaves.length; i++) labels.push(i.toString());
-
-      const datasets: {
-        label: string;
-        data: number[];
-        borderColor: string;
-        backgroundColor: string;
-        borderWidth: number;
-        pointRadius: number;
-      }[] = [];
-      for (let i = 1; i <= 14; i++) {
-        const channel = this.channels[i - 1];
-        const data = foundWaves.map((foundWave) => foundWave[channel.name]);
-        datasets.push({
-          label: `Canal ${i}`,
-          backgroundColor: channel.color,
-          borderColor: channel.color,
-          borderWidth: 1,
-          pointRadius: 0,
-          data,
-        });
-      }
-      this.charts.push({
-        options,
-        data: {
-          labels,
-          datasets,
-        },
+    const datasets: {
+      label: string;
+      data: number[];
+      borderColor: string;
+      backgroundColor: string;
+      borderWidth: number;
+      pointRadius: number;
+    }[] = [];
+    for (let i = 1; i <= 14; i++) {
+      const channel = this.channels[i - 1];
+      const data = waves.map((wave) => wave[channel.name]);
+      datasets.push({
+        label: `Canal ${i}`,
+        backgroundColor: channel.color,
+        borderColor: channel.color,
+        borderWidth: 1,
+        pointRadius: 0,
+        data,
       });
-    });
+    }
+    this.studyChart.data.datasets = datasets;
   }
 
   async ngOnInit(): Promise<void> {
@@ -223,18 +185,6 @@ export class StudyComponent implements OnInit {
         patientId,
         this.route.snapshot.params['id']
       );
-      if (this.study.executiveFunction) {
-        this.resultsChart.data.datasets[0].data = [
-          this.study!.executiveFunction!,
-          this.study!.sensoryProcessing!,
-          this.study!.repetitiveBehaviours!,
-          this.study!.motorSkills!,
-          this.study!.perseverativeThinking!,
-          this.study!.socialAwareness!,
-          this.study!.verbalNoVerbalCommunication!,
-          this.study!.informationProcessing!,
-        ];
-      }
       this.createCharts(this.study!.waves);
     } catch {
       this.router.navigate(['/']);
